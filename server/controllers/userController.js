@@ -33,3 +33,33 @@ export const handleUpdateProfile = async (req, res) => {
     console.error(error);
   }
 };
+
+export const handleGetUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findById({ _id: id }).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const handleGetUsers = async (req, res) => {
+  try {
+    const currentUserId = req.user.id;
+
+    const users = await User.find({ _id: { $ne: currentUserId } }).select(
+      "-password"
+    );
+
+    return res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+  }
+};
