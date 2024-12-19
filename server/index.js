@@ -4,6 +4,7 @@ import cors from "cors";
 
 import { connectDB } from "./lib/db.js";
 import { authRouter } from "./routes/auth.js";
+import { userRouter } from "./routes/user.js";
 
 dotenv.config();
 const app = express();
@@ -14,6 +15,7 @@ app.use(cors());
 const PORT = process.env.PORT || 3001;
 
 app.use("/", authRouter);
+app.use("/users", userRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
