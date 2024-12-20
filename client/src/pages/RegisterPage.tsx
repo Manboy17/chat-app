@@ -5,11 +5,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { BiLoaderAlt } from "react-icons/bi";
 import useAuth from "../store/useAuth";
 
+interface FieldsInterface {
+  name: string;
+  email: string;
+  password: string;
+}
+
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [fields, setFields] = useState({
+  const [error, setError] = useState<string | null>("");
+  const [fields, setFields] = useState<FieldsInterface>({
     name: "",
     email: "",
     password: "",

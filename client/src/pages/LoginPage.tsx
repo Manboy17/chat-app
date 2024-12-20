@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../store/useAuth";
 import { BiLoaderAlt } from "react-icons/bi";
 
-interface LoginDataInterface {
+interface FieldsInterface {
   email: string;
   password: string;
 }
@@ -14,7 +14,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [fields, setFields] = useState<LoginDataInterface>({
+  const [fields, setFields] = useState<FieldsInterface>({
     email: "",
     password: "",
   });
