@@ -3,11 +3,6 @@ import { persist } from "zustand/middleware";
 
 interface UserInterface {
   id: string;
-  email: string;
-  name: string;
-  profileImage: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 interface UseAuth {
