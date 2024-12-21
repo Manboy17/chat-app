@@ -54,9 +54,6 @@ export const handleLogin = async (req, res) => {
     const token = jwt.sign(
       {
         id: existingUser._id,
-        email: existingUser.email,
-        name: existingUser.name,
-        profileImage: existingUser.profileImage,
       },
       process.env.JWT_SECRET,
       {
