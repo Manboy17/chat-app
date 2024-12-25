@@ -6,8 +6,11 @@ export interface UserInterface {
 }
 
 export interface MessageInterface {
+  _id: string;
   senderId: string;
   receiverId: string;
-  content?: string;
-  image?: string;
+  content: string | null;
+  image: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 }

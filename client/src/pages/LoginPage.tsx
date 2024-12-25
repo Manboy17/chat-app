@@ -25,7 +25,7 @@ const LoginPage = () => {
     setFields((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     try {
@@ -72,7 +72,7 @@ const LoginPage = () => {
           <h1 className="text-xl font-bold leading-tight tracking-tight text-hray-900 md:text-2xl">
             Log in to your account
           </h1>
-          <form className="space-y-4 md:space-y-4">
+          <form className="space-y-4 md:space-y-4" onSubmit={handleSubmit}>
             <Input
               name="email"
               type="email"
@@ -85,7 +85,7 @@ const LoginPage = () => {
               placeholder="Password"
               onChange={handleChange}
             />
-            <Button className="w-full" type="submit" onClick={handleSubmit}>
+            <Button className="w-full" type="submit">
               Log in
             </Button>
             <p className="text-sm font-light text-gray-500 dark:text-gray-400">

@@ -1,4 +1,5 @@
 import Message from "../models/message.model.js";
+import cloudinary from "../lib/cloudinary.js";
 
 export const handleGetMessages = async (req, res) => {
   try {

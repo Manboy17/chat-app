@@ -27,7 +27,7 @@ const RegisterPage = () => {
     setFields((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -76,7 +76,7 @@ const RegisterPage = () => {
           <h1 className="text-xl font-bold leading-tight tracking-tight text-hray-900 md:text-2xl">
             Register a new account
           </h1>
-          <form className="space-y-4 md:space-y-4">
+          <form className="space-y-4 md:space-y-4" onSubmit={handleSubmit}>
             <Input
               name="name"
               type="text"
@@ -95,7 +95,7 @@ const RegisterPage = () => {
               placeholder="Password"
               onChange={handleChange}
             />
-            <Button className="w-full" type="submit" onClick={handleSubmit}>
+            <Button className="w-full" type="submit">
               Register
             </Button>
             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
