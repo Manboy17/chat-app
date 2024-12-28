@@ -18,7 +18,7 @@ const User = ({ user }: UserProps) => {
       <div className="w-full flex items-center justify-between p-2 space-x-4 border-b pb-2">
         <div className="flex items-center space-x-4">
           <img
-            src={user?.progileImage || nonUser}
+            src={user?.profileImage || nonUser}
             alt="user"
             className="w-10 h-10 rounded-full object-cover"
           />

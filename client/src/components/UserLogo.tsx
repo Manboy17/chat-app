@@ -17,7 +17,7 @@ const UserLogo = () => {
       className="flex items-center space-x-6 border-b pb-5"
     >
       <img
-        src={currentUser?.progileImage || nonUser}
+        src={currentUser?.profileImage || nonUser}
         alt="user-photo"
         className="w-[60px] h-[60px] rounded-full object-cover cursor-pointer"
       />

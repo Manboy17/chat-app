@@ -3,8 +3,15 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProtectedRoute from "./ProtectedRoute";
+import useAuth from "./store/useAuth.ts";
+import {useEffect} from "react";
 
 const App = () => {
+    const {checkToken} = useAuth();
+
+    useEffect(() => {
+        checkToken();
+    }, [checkToken]);
   return (
     <>
       <Routes>

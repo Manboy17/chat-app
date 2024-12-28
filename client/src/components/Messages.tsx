@@ -19,7 +19,7 @@ const Messages = () => {
           <div
             key={m._id + m.createdAt}
             className={`flex ${
-              m.senderId === currentUserId ? "justify-start" : "justify-end"
+              m.senderId === currentUserId ? "justify-end" : "justify-start" // figure out this issue!
             }`}
           >
             <div
@@ -38,7 +38,7 @@ const Messages = () => {
               )}
               {m.content && <p>{m.content}</p>}
               <span className="text-xs mt-2 block">
-                {getTimestamp(m.createdAt)}
+                {getTimestamp((m.createdAt))}
               </span>
             </div>
           </div>

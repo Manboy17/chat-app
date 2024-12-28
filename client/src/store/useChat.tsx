@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import { MessageInterface, UserInterface } from "../lib/types";
 
 interface SendMessageInterface {
@@ -21,8 +20,7 @@ interface ChatInterface {
   setSelectedUser(user: UserInterface | null): void;
 }
 
-export const useChat = create(
-  persist<ChatInterface>(
+export const useChat = create<ChatInterface>(
     (set, get) => ({
       messages: [],
       users: [],
@@ -115,7 +113,10 @@ export const useChat = create(
           if (!response.ok) {
             throw new Error(`Error: ${response.statusText}`);
           }
-          set({ messages: [...messages, message] });
+
+          const newMessage = await response.json();
+
+          set({ messages: [...messages, newMessage] });
         } catch (error) {
           console.error(error);
         }
@@ -125,8 +126,4 @@ export const useChat = create(
         set({ selectedUser: user });
       },
     }),
-    {
-      name: "chatState",
-    }
-  )
 );

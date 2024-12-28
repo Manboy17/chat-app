@@ -1,43 +1,78 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import {create} from "zustand";
+import {io, Socket} from "socket.io-client";
 
 interface UserInterface {
-  id: string;
+    id: string;
 }
 
 interface UseAuth {
-  user: UserInterface | null;
-  login: (token: string) => void;
-  logout: () => void;
+    user: UserInterface | null;
+    checkToken: () => void;
+    login: (token: string) => void;
+    logout: () => void;
+    onlineUsers: UserInterface[];
+    socket: Socket | null;
+    connectSocket: () => void;
+    disconnectSocket: () => void;
 }
 
-const useAuth = create(
-  persist<UseAuth>(
-    (set) => ({
-      user: null,
+const useAuth = create<UseAuth>((set, get) => ({
+    user: null,
+    onlineUsers: [],
+    socket: null,
 
-      login: (token: string) => {
+    checkToken: () => {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        try {
+            const payload = JSON.parse(atob(token.split(".")[1]));
+            set({
+                user: payload,
+            })
+            get().connectSocket();
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    login: (token: string) => {
         localStorage.setItem("token", token);
 
         const payload = JSON.parse(atob(token.split(".")[1]));
 
         set({
-          user: payload,
+            user: payload,
         });
-      },
+        get().connectSocket();
+    },
 
-      logout: () => {
+    logout: () => {
         localStorage.removeItem("token");
 
+        get().disconnectSocket();
         set({
-          user: null,
+            user: null,
         });
-      },
-    }),
-    {
-      name: "userLoginStatus",
-    }
-  )
-);
+    },
+
+    connectSocket: () => {
+        const {user} = get();
+        if (!user || get().socket?.connected) return;
+
+        const socket = io("http://localhost:3000");
+        socket.connect();
+
+        set({socket});
+    },
+
+    disconnectSocket: () => {
+        const socket = get().socket;
+        if (socket?.connected) {
+            console.log("Disconnecting socket");
+            socket.disconnect();
+        }
+    },
+}));
 
 export default useAuth;

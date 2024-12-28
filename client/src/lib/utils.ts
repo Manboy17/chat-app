@@ -6,6 +6,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const getTimestamp = (createdAt: Date): string => {
-  const date = new Date(createdAt);
-  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  return new Date(createdAt).toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
 };
