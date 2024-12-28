@@ -5,13 +5,17 @@ import useAuth from "../store/useAuth.ts";
 
 const Messages = () => {
   const {user} = useAuth();
-  const { messages, getMessages, selectedUser } = useChat();
+  const { messages, getMessages, selectedUser, subscribeToMessages, unsubscribeFromMessages } = useChat();
   const selectedUserId = selectedUser?._id;
   const currentUserId = user?.id;
 
   useEffect(() => {
     getMessages(selectedUserId);
-  }, [selectedUserId, getMessages]);
+
+    subscribeToMessages();
+
+    return () => unsubscribeFromMessages();
+  }, [selectedUserId, getMessages, subscribeToMessages, unsubscribeFromMessages]);
 
   return (
     <div className="flex-1 overflow-y-auto overflow-hidden no-scrollbar p-4 space-y-4 bg-gray-100 rounded-lg shadow-inner relative">
