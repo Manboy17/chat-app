@@ -10,7 +10,7 @@ interface UseAuth {
     checkToken: () => void;
     login: (token: string) => void;
     logout: () => void;
-    onlineUsers: UserInterface[];
+    onlineUsers: string[];
     socket: Socket | null;
     connectSocket: () => void;
     disconnectSocket: () => void;
@@ -60,10 +60,20 @@ const useAuth = create<UseAuth>((set, get) => ({
         const {user} = get();
         if (!user || get().socket?.connected) return;
 
-        const socket = io("http://localhost:3000");
+        const socket = io("http://localhost:3000", {
+            query: {
+                userId: user.id,
+            }
+        });
         socket.connect();
 
         set({socket});
+
+        socket.on("online_users", (users) => {
+            set({
+                onlineUsers: users
+            })
+        })
     },
 
     disconnectSocket: () => {

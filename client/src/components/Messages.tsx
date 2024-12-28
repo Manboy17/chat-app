@@ -1,14 +1,17 @@
 import { useEffect } from "react";
 import { useChat } from "../store/useChat";
 import { getTimestamp } from "../lib/utils";
+import useAuth from "../store/useAuth.ts";
 
 const Messages = () => {
+  const {user} = useAuth();
   const { messages, getMessages, selectedUser } = useChat();
-  const currentUserId = selectedUser?._id;
+  const selectedUserId = selectedUser?._id;
+  const currentUserId = user?.id;
 
   useEffect(() => {
-    getMessages(currentUserId);
-  }, [currentUserId, getMessages]);
+    getMessages(selectedUserId);
+  }, [selectedUserId, getMessages]);
 
   return (
     <div className="flex-1 overflow-y-auto overflow-hidden no-scrollbar p-4 space-y-4 bg-gray-100 rounded-lg shadow-inner relative">
@@ -19,7 +22,7 @@ const Messages = () => {
           <div
             key={m._id + m.createdAt}
             className={`flex ${
-              m.senderId === currentUserId ? "justify-end" : "justify-start" // figure out this issue!
+              m.senderId === currentUserId ? "justify-end" : "justify-start"
             }`}
           >
             <div

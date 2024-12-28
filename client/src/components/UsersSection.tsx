@@ -22,7 +22,7 @@ const UsersSection = () => {
       <div className="py-4">
         <Input type="text" placeholder="Search by name" />
       </div>
-      <div className="">
+      <div>
         <UsersList />
       </div>
       <Button className="w-full mt-10" onClick={handleLogout}>
