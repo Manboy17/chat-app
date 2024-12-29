@@ -117,6 +117,7 @@ export const useChat = create<ChatInterface>(
                             Authorization: `Bearer ${localStorage.getItem("token")}`,
                         },
                         body: JSON.stringify(message),
+                        credentials: "include",
                     }
                 );
 
@@ -140,6 +141,7 @@ export const useChat = create<ChatInterface>(
 
             socket.on("new_message", (message: MessageInterface) => {
                 console.log("received message!");
+                if (message.senderId !== selectedUser._id) return;
                 set({
                     messages: [...get().messages, message],
                 })

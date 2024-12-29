@@ -10,6 +10,7 @@ interface UserProps {
 const User = ({user}: UserProps) => {
     const {onlineUsers} = useAuth();
     const {selectedUser, setSelectedUser} = useChat();
+
     return (
         <div
             className={`flex items-center justify-between hover:bg-gray-100 hover:rounded-md hover:transition cursor-pointer relative ${
@@ -30,7 +31,7 @@ const User = ({user}: UserProps) => {
                     <div>
                         <h3 className="text-lg font-semibold">{user.name}</h3>
                         <p className="text-sm font-light whitespace-nowrap">
-                            no messages...
+                            See your messages
                         </p>
                     </div>
                 </div>

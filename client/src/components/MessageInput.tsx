@@ -10,11 +10,11 @@ const MessageInput = () => {
   const [image, setImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { sendMessage } = useChat();
+  const [isMessageSending, setIsMessageSending] = useState(false);
 
   const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (!message.trim() && !image) return;
+    setIsMessageSending(true);
 
     try {
       await sendMessage({
@@ -27,6 +27,8 @@ const MessageInput = () => {
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsMessageSending(false);
     }
   };
 
@@ -76,6 +78,7 @@ const MessageInput = () => {
           placeholder="Message..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          required={true}
         />
         <Input
           type="file"
@@ -89,7 +92,7 @@ const MessageInput = () => {
           <BsFolderPlus size={28} />
         </button>
 
-        <Button type="submit" disabled={!message && !image}>
+        <Button type="submit" disabled={(!message && !image) || isMessageSending}>
           Send
         </Button>
       </form>
