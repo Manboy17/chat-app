@@ -1,5 +1,7 @@
 # Full Stack Real Time Chat Application
 
+![preview](./assets/preview.png)
+
 ### Tech stack: MERN, Socket.io, TailwindCSS, Shadcn
 
 ## Features
