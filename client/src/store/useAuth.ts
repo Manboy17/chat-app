@@ -27,6 +27,13 @@ const useAuth = create<UseAuth>((set, get) => ({
 
         try {
             const payload = JSON.parse(atob(token.split(".")[1]));
+            const currentTime = Math.floor(Date.now() / 1000);
+
+            if (payload.exp < currentTime) {
+                get().logout();
+                return;
+            }
+
             set({
                 user: payload,
             })
