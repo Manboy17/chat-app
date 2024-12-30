@@ -10,6 +10,7 @@
 - Real time sending messages and images
 - Online user status
 - User profile updating
+- Searching users
 
 ## Installation - setup .env file
 
