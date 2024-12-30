@@ -63,3 +63,19 @@ export const handleGetUsers = async (req, res) => {
     console.error(error);
   }
 };
+
+export const handleSearchUsers = async (req, res) => {
+  try {
+    const search = req.query.search || "";
+    const currentUserId = req.user.id;
+
+    const users = await User.find({
+      name: { $regex: new RegExp(search, "i")},
+      _id: { $ne: currentUserId},
+    });
+
+    return res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+  }
+};

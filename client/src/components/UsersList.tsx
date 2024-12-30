@@ -19,11 +19,18 @@ const UsersList = () => {
       ) : (
         <>
           <h2 className="text-lg font-semibold">People</h2>
-          <div className="flex flex-col space-y-4 pt-3 overflow-y-scroll overflow-hidden no-scrollbar max-h-[70vh]">
-            {users.map((user: UserInterface) => (
-              <User user={user} key={user._id} />
-            ))}
-          </div>
+          {
+            users.length > 0 ? (
+                <div
+                    className="flex flex-col space-y-4 pt-3 overflow-y-scroll overflow-hidden no-scrollbar max-h-[70vh]">
+                  {users.map((user: UserInterface) => (
+                      <User user={user} key={user._id}/>
+                  ))}
+                </div>
+            ) : (
+                <p className="text-sm font-semibold text-center mt-5">No users found!</p>
+            )
+          }
         </>
       )}
     </div>

@@ -28,6 +28,8 @@ interface ChatInterface {
     unsubscribeFromMessages(): void;
 
     setSelectedUser(user: UserInterface | null): void;
+
+    searchUsers(search: string | null): void;
 }
 
 export const useChat = create<ChatInterface>(
@@ -151,6 +153,28 @@ export const useChat = create<ChatInterface>(
             const socket = useAuth.getState().socket as Socket;
 
             socket.off("new_message");
+        },
+
+        searchUsers: async (search: string) => {
+            try {
+                const response = await fetch(`http://localhost:3000/users/search?search=${search}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                };
+
+                set({
+                    users: await response.json(),
+                });
+            } catch (error) {
+                console.error(error);
+            }
         },
 
         setSelectedUser: (user: UserInterface) => {
