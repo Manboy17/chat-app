@@ -2,6 +2,7 @@ import {create} from "zustand";
 import {MessageInterface, UserInterface} from "../lib/types";
 import useAuth from "./useAuth.ts";
 import {Socket} from "socket.io-client";
+import {apiRequest} from "../lib/utils.ts";
 
 interface SendMessageInterface {
     content: string | null;
@@ -43,18 +44,8 @@ export const useChat = create<ChatInterface>(
         getUsers: async () => {
             set({isUsersLoading: true});
             try {
-                const response = await fetch("http://localhost:3000/users", {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.statusText}`);
-                }
-                set({users: await response.json()});
+                const users = await apiRequest("http://localhost:3000/users");
+                set({users});
             } catch (error) {
                 console.error(error);
             } finally {
@@ -64,21 +55,8 @@ export const useChat = create<ChatInterface>(
 
         getCurrentUser: async (userId: string) => {
             try {
-                const response = await fetch(
-                    `http://localhost:3000/users/${userId}`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${localStorage.getItem("token")}`,
-                        },
-                    }
-                );
-
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.statusText}`);
-                }
-                set({currentUser: await response.json()});
+                const currentUser = await apiRequest((`http://localhost:3000/users/${userId}`))
+                set({currentUser});
             } catch (error) {
                 console.error(error);
             }
@@ -86,22 +64,8 @@ export const useChat = create<ChatInterface>(
 
         getMessages: async (userId: string) => {
             try {
-                const response = await fetch(
-                    `http://localhost:3000/messages/${userId}`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${localStorage.getItem("token")}`,
-                        },
-                    }
-                );
-
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.statusText}`);
-                }
-
-                set({messages: await response.json()});
+                const messages = await apiRequest(`http://localhost:3000/messages/${userId}`)
+                set({messages});
             } catch (error) {
                 console.error(error);
             }
@@ -110,25 +74,7 @@ export const useChat = create<ChatInterface>(
         sendMessage: async (message: MessageInterface) => {
             const {selectedUser, messages} = get();
             try {
-                const response = await fetch(
-                    `http://localhost:3000/messages/${selectedUser?._id}`,
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${localStorage.getItem("token")}`,
-                        },
-                        body: JSON.stringify(message),
-                        credentials: "include",
-                    }
-                );
-
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.statusText}`);
-                }
-
-                const newMessage = await response.json();
-
+                const newMessage = await apiRequest(`http://localhost:3000/messages/${selectedUser?._id}`, "POST", message);
                 set({messages: [...messages, newMessage]});
             } catch (error) {
                 console.error(error);
@@ -157,21 +103,8 @@ export const useChat = create<ChatInterface>(
 
         searchUsers: async (search: string) => {
             try {
-                const response = await fetch(`http://localhost:3000/users/search?search=${search}`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.statusText}`);
-                };
-
-                set({
-                    users: await response.json(),
-                });
+                const users = await apiRequest(`http://localhost:3000/users/search?search=${search}`);
+                set({users});
             } catch (error) {
                 console.error(error);
             }

@@ -12,3 +12,27 @@ export const getTimestamp = (createdAt: Date): string => {
     hour12: false,
   });
 };
+
+export const apiRequest = async (url: string, method: string = "GET", body: any = null) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: body ? JSON.stringify(body) : null,
+      credentials: "include", // if needed
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw error; // rethrow the error after logging it
+  }
+};
