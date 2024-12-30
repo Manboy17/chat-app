@@ -12,21 +12,20 @@ export const handleUpdateProfile = async (req, res) => {
     const { name, profileImage } = validatedData;
     const userId = req.user.id;
 
-    if (!profileImage) {
-      return res.status(400).json({
-        message: "Profile image is required",
-      });
+    const updatedData = {};
+
+    if (name) {
+      updatedData.name = name;
     }
 
-    const uploadResponse = await cloudinary.uploader.upload(profileImage);
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      {
-        name,
-        profileImage: uploadResponse.secure_url,
-      },
-      { new: true }
-    );
+    if (profileImage) {
+      const uploadResponse = await cloudinary.uploader.upload(profileImage);
+      updatedData.profileImage = uploadResponse.secure_url;
+    } else if (profileImage === null) {
+      updatedData.profileImage = null;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updatedData, { new: true });
 
     return res.status(200).json(updatedUser);
   } catch (error) {

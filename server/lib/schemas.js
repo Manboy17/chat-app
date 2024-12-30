@@ -13,5 +13,5 @@ export const loginSchema = yup.object({
 
 export const updateUserSchema = yup.object({
   name: yup.string(),
-  profileImage: yup.string(),
+  profileImage: yup.string().nullable().optional(),
 });
