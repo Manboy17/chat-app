@@ -2,7 +2,7 @@ import {create} from "zustand";
 import {MessageInterface, UserInterface} from "../lib/types";
 import useAuth from "./useAuth.ts";
 import {Socket} from "socket.io-client";
-import {apiRequest} from "../lib/utils.ts";
+import {apiRequest, apiUrl} from "../lib/utils.ts";
 
 interface SendMessageInterface {
     content: string | null;
@@ -44,7 +44,7 @@ export const useChat = create<ChatInterface>(
         getUsers: async () => {
             set({isUsersLoading: true});
             try {
-                const users = await apiRequest("http://localhost:3000/users");
+                const users = await apiRequest(`${apiUrl}/users`);
                 set({users});
             } catch (error) {
                 console.error(error);
@@ -55,7 +55,7 @@ export const useChat = create<ChatInterface>(
 
         getCurrentUser: async (userId: string) => {
             try {
-                const currentUser = await apiRequest((`http://localhost:3000/users/${userId}`))
+                const currentUser = await apiRequest((`${apiUrl}/users/${userId}`))
                 set({currentUser});
             } catch (error) {
                 console.error(error);
@@ -64,7 +64,7 @@ export const useChat = create<ChatInterface>(
 
         getMessages: async (userId: string) => {
             try {
-                const messages = await apiRequest(`http://localhost:3000/messages/${userId}`)
+                const messages = await apiRequest(`${apiUrl}/messages/${userId}`)
                 set({messages});
             } catch (error) {
                 console.error(error);
@@ -74,7 +74,7 @@ export const useChat = create<ChatInterface>(
         sendMessage: async (message: MessageInterface) => {
             const {selectedUser, messages} = get();
             try {
-                const newMessage = await apiRequest(`http://localhost:3000/messages/${selectedUser?._id}`, "POST", message);
+                const newMessage = await apiRequest(`${apiUrl}/messages/${selectedUser?._id}`, "POST", message);
                 set({messages: [...messages, newMessage]});
             } catch (error) {
                 console.error(error);
@@ -103,7 +103,7 @@ export const useChat = create<ChatInterface>(
 
         searchUsers: async (search: string) => {
             try {
-                const users = await apiRequest(`http://localhost:3000/users/search?search=${search}`);
+                const users = await apiRequest(`${apiUrl}/users/search?search=${search}`);
                 set({users});
             } catch (error) {
                 console.error(error);

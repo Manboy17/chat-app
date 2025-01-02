@@ -4,6 +4,7 @@ import { Button } from "../components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { BiLoaderAlt } from "react-icons/bi";
 import useAuth from "../store/useAuth";
+import {apiUrl} from "../lib/utils.ts";
 
 interface FieldsInterface {
   name: string;
@@ -32,7 +33,7 @@ const RegisterPage = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3000/users", {
+      const response = await fetch(`${apiUrl}/users`, {
         method: "POST",
         body: JSON.stringify({
           email: fields.email,

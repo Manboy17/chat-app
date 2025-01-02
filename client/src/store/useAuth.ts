@@ -1,6 +1,8 @@
 import {create} from "zustand";
 import {io, Socket} from "socket.io-client";
 
+const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
+
 interface UserInterface {
     id: string;
 }
@@ -67,7 +69,7 @@ const useAuth = create<UseAuth>((set, get) => ({
         const {user} = get();
         if (!user || get().socket?.connected) return;
 
-        const socket = io("http://localhost:3000", {
+        const socket = io(BASE_URL, {
             query: {
                 userId: user.id,
             }

@@ -4,6 +4,7 @@ import { Input } from "../components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../store/useAuth";
 import { BiLoaderAlt } from "react-icons/bi";
+import {apiUrl} from "../lib/utils.ts";
 
 interface FieldsInterface {
   email: string;
@@ -29,7 +30,7 @@ const LoginPage = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:3000/tokens", {
+      const response = await fetch(`${apiUrl}/tokens`, {
         method: "POST",
         body: JSON.stringify({
           email: fields.email,

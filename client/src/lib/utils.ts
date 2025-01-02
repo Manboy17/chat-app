@@ -36,3 +36,5 @@ export const apiRequest = async (url: string, method: string = "GET", body: any 
     throw error; // rethrow the error after logging it
   }
 };
+
+export const apiUrl = import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";

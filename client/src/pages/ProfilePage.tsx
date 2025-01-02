@@ -5,6 +5,7 @@ import {IoArrowBackSharp, IoCloseSharp} from "react-icons/io5";
 import {useChat} from "../store/useChat.tsx";
 import {useRef, useState} from "react";
 import {BiLoaderAlt} from "react-icons/bi";
+import {apiUrl} from "../lib/utils.ts";
 
 const ProfilePage = () => {
     const navigate = useNavigate();
@@ -45,7 +46,7 @@ const ProfilePage = () => {
         setIsLoading(true);
 
         try {
-            const response = await fetch("http://localhost:3000/users", {
+            const response = await fetch(`${apiUrl}/users`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
